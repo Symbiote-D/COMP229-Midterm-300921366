@@ -1,3 +1,5 @@
+// app.js - Deshaun J. - 300921366 - Favorite BookList
+
 //IIFE
 (function()
 {
