@@ -1,3 +1,5 @@
+// books.js - Deshaun J. - 300921366 - Favorite BookList
+
 // define the book model
 import booksModel from '../models/books.js';
 
@@ -15,39 +17,88 @@ export function displayBookList(req, res, next) {
 
 //  GET the Book Details page in order to add a new Book
 export function displayAddPage(req, res, next) {
-
-    /*****************
-    * ADD CODE HERE *
-    *****************/
+    res.render('index', {title: ' Add Book', page: 'books/add', books: {}})
 }
-
 // POST process the Book Details page and create a new Book - CREATE
 export function processAddPage(req, res, next) {
+    let newBook = booksModel({
+        name: req.body.name,
+        author: req.body.author,
+        published: req.body.published,
+        description: req.body.description,
+        price: req.body.price,
+    });
 
-    /*****************
-     * ADD CODE HERE *
-     *****************/
+    booksModel.create(newBook,function(error, Book){
+        if (error) {
+            console.error(error);
+            res.end(error);
+        }
+
+       res.redirect('/books/list')
+    })
+ 
 }
 
 // GET the Book Details page in order to edit an existing Book
 export function displayEditPage(req, res, next) {
+let id = req.params.id;
 
-    /*****************
-     * ADD CODE HERE *
-     *****************/
-
+booksModel.findById(id, function(error, book){
+    if (error) {
+        console.error(error);
+        res.end(error);
+    }
+    
+    res.render('index', {title: ' Edit Book', page: 'books/edit', book})
+})
 }
-
-// POST - process the information passed from the details form and update the document
+// POST process the Book Details page and create a new Book - CREATE
 export function processEditPage(req, res, next) {
-    /*****************
-    * ADD CODE HERE *
-    *****************/
-}
+    let id = req.params.id
+
+    let editBook =({
+        _id: req.body.id,
+        name: req.body.name,
+        author: req.body.author,
+        published: req.body.published,
+        description: req.body.description,
+        price: req.body.price,
+    });
+
+    booksModel.updateOne({_id: id},editBook,function(error, book){
+        if (error) {
+            console.error(error);
+            res.end(error);
+
+            
+        }else{
+            res.redirect('/books/list');
+
+        };
+
+       //res.redirect('/books/list');
+    });
+ 
+};
+
+
+
 
 // GET - process the delete by user id
 export function processDelete(req, res, next) {
-    /*****************
-  * ADD CODE HERE *
-  *****************/
+
+    let id = req.params.id
+
+    booksModel.remove({_id: id}, function(error){
+
+        if (error) {
+            console.error(error);
+            res.end(error);
+        }
+
+        res.redirect('/books/list')
+    })
+
+
 }

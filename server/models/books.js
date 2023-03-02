@@ -1,3 +1,4 @@
+// books.js - Deshaun J. - 300921366 - Favorite BookList
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
